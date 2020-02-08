@@ -22,7 +22,7 @@ class Tracker {
     constructor(chunk_size) {
         this.chunk_size = chunk_size
         this.table = new Array()
-        this.chunk_counter = 0
+        this.chunk_counter = 1
     }
 
     getCurrentChunk(){
