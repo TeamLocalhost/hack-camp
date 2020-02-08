@@ -6,10 +6,23 @@ const splitFile = require('split-file');
 var app = express()
 port=8080
 
+//Spliting files into chunks
 function splitChunks(file){
-    splitFile.splitFileBySize(__dirname + '/downloads/'+file+'/bin/'+file, 1000000)
+    // const com= spawn("tar",["cvzf",file,file])
+    // com.on("close",code=>{
+    //     if(!code){
+    //         console.log(`Compressed ${file}  succesfully`);
+    //     }
+    // })
+    splitFile.splitFileBySize(__dirname + '/downloads/'+file+'/'+file, 1000000)
     .then((names) => {
       console.log(names);
+      const del = spawn("rm",[__dirname + '/downloads/'+file+'/'+file]);
+      del.on("close",code=>{
+        if(!code){
+            console.log(`Deleted ${file}  succesfully`);
+        }
+      })
     })
     .catch((err) => {
       console.log('Error: ', err);
@@ -19,15 +32,19 @@ function splitChunks(file){
 
 app.use(bodyParser.json())  //Parsing 
 
-app.post('/', (req, res)=> {
+//{
+// 	"link":"https://www.tutorialspoint.com/expressjs/expressjs_restful_apis.htm"
+// }
+
+app.post('/download', (req, res)=> {
     var d=req.body.link
     var file=d.split("/")
     file=file[(file.length)-1]
-    const down = spawn("wget",[d,"-P", "downloads/"+file+"/bin"]);
+    const down = spawn("wget",[d,"-P", "downloads/"+file]);
     down.on("close", code => {
-        console.log(`child process exited with code ${code}`);
         if(!code){
             res.send("Success")          
+            console.log("Downloaded Succesfully")
             splitChunks(file)
         }
         else{
@@ -36,8 +53,6 @@ app.post('/', (req, res)=> {
     })
 
 })
-
-
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
