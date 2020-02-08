@@ -6,7 +6,7 @@ const Tracker = require('../download_server/tracker')
 const jwt = require('jsonwebtoken')
 
 var app = express()
-port = 8080
+port = 80
 
 function splitChunks(file) {
     // const com= spawn("tar",["cvzf",file,file])
@@ -63,22 +63,25 @@ app.post('/download', (req, res) => {
 
     var file = file_url.split("/")
     file = file[(file.length) - 1]
-    // const down = spawn("wget", [file_url, "-P", "downloads/" + file + "/bin"]);
-    res.send({ status: "success", group_token: group_token })
-    table[group_token] = new Tracker()
+    const down = spawn("wget", [file_url, "-P", "downloads/" + file + "/bin"]);
+    // res.send({ status: "success", group_token: group_token })
+    
 
 
-    // down.on("close", code => {
-    //     console.log(`child process exited with code ${code}`);
-    //     if (!code) 
-    //     {
-    //         // res.send({ status: "success",group_token:group_token })
-    //         splitChunks(file)
-    //     }
-    //     else {
-    //         res.send({ status: "error" })
-    //     }
-    // })
+    down.on("close", code => {
+        console.log(`child process exited with code ${code}`);
+        if (!code) 
+        {
+            // res.send({ status: "success",group_token:group_token })
+            splitChunks(file)
+                table[group_token] = new Tracker()
+        }
+        else {
+            res.send({ status: "error" })
+        }
+    })
+
+    
 
 })
 

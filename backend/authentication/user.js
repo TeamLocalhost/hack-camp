@@ -37,12 +37,12 @@ app.post('/login', (req, res) => {
                     }
 
                     else
-                        res.status(300).send({ status: "fail" })
+                        res.status(300).send({ status: "error" })
                 }
             })
         }
         catch (err) {
-            res.send({ status: "user does not exist" })
+            res.send({ status: "error" })
         }
     })
 
@@ -55,7 +55,7 @@ app.post('/signup', (req, res) => {
     if (password_intial.length >= 4) {
         bcrypt.hash(password_intial, 4, (err, password) => {
             if (err)
-                res.status(400).send({ status: "failed to create account" })
+                res.status(400).send({ status: "error" })
             else {
                 const newUser = new User({ username, password })
 
@@ -67,11 +67,11 @@ app.post('/signup', (req, res) => {
         })
     }
     else {
-        res.status(300).send({ status: "failed to create account. password lesser than 4 characters" })
+        res.status(300).send({ status: "error" })
     }
 
 })
 
-app.listen(8888, () => {
+app.listen(80, () => {
     console.log('created..')
 })
