@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>ExpressJS - RESTFul APIs - Tutorialspoint</title>
+<meta charset="utf-8">
+<meta name="description" content="ExpressJS - RESTFul APIs - An API is always needed to create mobile applications, single page applications, use AJAX calls and provide data to clients. An popular architectural style of h"/>
+<meta name="keywords" content="C, C++, Python, Java, HTML, CSS, JavaScript, SQL, PHP, jQuery, XML, DOM, Bootstrap, Tutorials, Articles, Programming, training, learning, quiz, preferences, examples, code"/>
+<link rel="canonical" href="https://www.tutorialspoint.com/expressjs/expressjs_restful_apis.htm" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes">
+<link rel="stylesheet" href="/themes/css/style-min-v1.css">
+<script src="/themes/js/script-min-v1.js?v=1.0.2"></script>
+<script>function printPage() { window.print(); }</script>
+<script data-cfasync="false" type="text/javascript">(function(w, d) { var s = d.createElement('script'); s.src = '//cdn.adpushup.com/40046/adpushup.js'; s.type = 'text/javascript'; s.async = true; (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(s); })(window, document);</script>
+<script data-cfasync="false" type="text/javascript">(function(w, d) { var s = d.createElement('script'); s.src = '//delivery.adrecover.com/18107/adRecover.js'; s.type = 'text/javascript'; s.async = true; (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(s); })(window, document);</script>
+
+<style>
+.right-menu .mui-btn {
+    background-color:#87bb38;
+}
+a.demo {
+    background:#87bb38;
+}
+li.heading {
+    background:#87bb38;
+}
+.course-box{background:#87bb38}
+.home-intro-sub p{color:#87bb38}
+</style>
+</head>
+<body>
+<header id="header">
+<!-- Top sub-menu Starts Here -->
+<div class="mui-appbar mui-container-fulid top-menu">
+<div class="mui-container">
+<div class="top-menu-item home">
+<a href="https://www.tutorialspoint.com/index.htm" target="_blank" title="TutorialsPoint - Home"><i class="fal fa-home"></i> <span>Home</span></a>
+</div>
+<div class="top-menu-item qa">
+<a href="https://www.tutorialspoint.com/about/about_careers.htm" target="_blank" title="Job @ Tutorials Point"><i class="fa fa-suitcase"></i> <span>Jobs</span></a>
+</div>
+<div class="top-menu-item tools">
+<a href="https://www.tutorialspoint.com/online_dev_tools.htm" target="_blank" title="Tools - Online Development and Testing Tools"><i class="fal fa-cogs"></i> <span>Tools</span></a>
+</div>
+<div class="top-menu-item coding-ground">
+<a href="https://www.tutorialspoint.com/codingground.htm" target="_blank" title="Coding Ground - Free Online IDE and Terminal"><i class="fal fa-code"></i> <span>Coding Ground </span></a> 
+</div>
+<div class="top-menu-item current-affairs">
+<a href="https://www.tutorialspoint.com/current_affairs.htm" target="_blank" title="Daily Current Affairs"><i class="fal fa-layer-plus"></i> <span>Current Affairs</span></a>
+</div>
+<div class="top-menu-item upsc-notes">
+<a href="https://www.tutorialspoint.com/upsc_ias_exams.htm" target="_blank" title="UPSC IAS Exams Notes - TutorialsPoint"><i class="fal fa-user-tie"></i> <span>UPSC Notes</span></a>
+</div>      
+<div class="top-menu-item online-tutoris">
+<a href="https://www.tutorialspoint.com/tutor_connect/index.php" target="_blank" title="Top Online Tutors - Tutor Connect"><i class="fal fa-user"></i> <span>Online Tutors</span></a>
+</div>
+<div class="top-menu-item whiteboard">
+<a href="https://www.tutorialspoint.com/whiteboard.htm" target="_blank" title="Free Online Whiteboard"><i class="fal fa-chalkboard"></i> <span>Whiteboard</span></a>
+</div>
+<div class="top-menu-item net-meeting">
+<a href="https://www.tutorialspoint.com/netmeeting.php" target="_blank" title="A free tool for online video conferencing"><i class="fal fa-chalkboard-teacher"></i> <span>Net Meeting</span></a> 
+</div>
+<div class="top-menu-item articles">
+<a href="https://www.tutorix.com" target="_blank" title="Tutorx - The Best Learning App" rel="nofollow"><i class="fal fa-video"></i> <span>Tutorix</span></a> 
+</div>        
+<div class="social-menu-item">
+<a href="https://www.facebook.com/tutorialspointindia" target="_blank" rel="nofollow" data-placement="bottom" title="tutorialspoint @ Facebook"><i class="fab fa-facebook-f"></i></a> 
+<a href="https://www.twitter.com/tutorialspoint" target="_blank" rel="nofollow" data-placement="bottom" title="tutorialspoint @ Twitter"><i class="fab fa-twitter"></i></a>
+<a href="https://www.linkedin.com/company/tutorialspoint" target="_blank" rel="nofollow" data-placement="bottom" title="tutorialspoint @ Linkedin"><i class="fab fa-linkedin-in"></i></a>
+<a href="https://www.youtube.com/channel/UCVLbzhxVTiTLiVKeGV7WEBg" target="_blank" rel="nofollow" data-placement="bottom" title="tutorialspoint YouTube"><i class="fab fa-youtube"></i></a>
+</div>        
+</div>
+</div>
+<!-- Top sub-menu Ends Here -->
+<!-- Top main-menu Starts Here -->
+<div class="mui-appbar mui-container-fulid mui--appbar-line-height mui--z1" id="logo-menu">
+<div class="mui-container">
+<div class="left-menu">
+<a href="https://www.tutorialspoint.com/index.htm" title="Tutorialspoint">
+<img class="tp-logo" alt="tutorialspoint" src="/expressjs/images/logo.png">
+</a>
+<div class="mui-dropdown">
+<a class="mui-btn mui-btn--primary categories" data-mui-toggle="dropdown"><i class="fa fa-th-large"></i> 
+<span>Categories <span class="mui-caret"></span></span></a>            
+<ul class="mui-dropdown__menu cat-menu">
+<li>
+<ul>
+<li><a href="/academic_tutorials.htm"><i class="fa fa-caret-right"></i> Academic Tutorials</a></li>
+<li><a href="/big_data_tutorials.htm"><i class="fa fa-caret-right"></i> Big Data &amp; Analytics </a></li>
+<li><a href="/computer_programming_tutorials.htm"><i class="fa fa-caret-right"></i> Computer Programming </a></li>
+<li><a href="/computer_science_tutorials.htm"><i class="fa fa-caret-right"></i> Computer Science </a></li>
+<li><a href="/database_tutorials.htm"><i class="fa fa-caret-right"></i> Databases </a></li>
+<li><a href="/devops_tutorials.htm"><i class="fa fa-caret-right"></i> DevOps </a></li>
+<li><a href="/digital_marketing_tutorials.htm"><i class="fa fa-caret-right"></i> Digital Marketing </a></li>
+<li><a href="/engineering_tutorials.htm"><i class="fa fa-caret-right"></i> Engineering Tutorials </a></li>
+<li><a href="/upsc_ias_exams.htm"><i class="fa fa-caret-right"></i> Exams Syllabus </a></li>
+<li><a href="/famous_monuments.htm"><i class="fa fa-caret-right"></i> Famous Monuments </a></li>
+<li><a href="/gate_exams_tutorials.htm"><i class="fa fa-caret-right"></i> GATE Exams Tutorials</a></li>
+<li><a href="/latest_technologies.htm"><i class="fa fa-caret-right"></i> Latest Technologies </a></li>
+<li><a href="/machine_learning_tutorials.htm"><i class="fa fa-caret-right"></i> Machine Learning </a></li>
+<li><a href="/mainframe_tutorials.htm"><i class="fa fa-caret-right"></i> Mainframe Development </a></li>
+<li><a href="/management_tutorials.htm"><i class="fa fa-caret-right"></i> Management Tutorials </a></li>
+<li><a href="/maths_tutorials.htm"><i class="fa fa-caret-right"></i> Mathematics Tutorials</a></li>
+<li><a href="/microsoft_technologies_tutorials.htm"><i class="fa fa-caret-right"></i> Microsoft Technologies </a></li>
+<li><a href="/misc_tutorials.htm"><i class="fa fa-caret-right"></i> Misc tutorials </a></li>
+<li><a href="/mobile_development_tutorials.htm"><i class="fa fa-caret-right"></i> Mobile Development </a></li>
+<li><a href="/java_technology_tutorials.htm"><i class="fa fa-caret-right"></i> Java Technologies </a></li>
+<li><a href="/python_technologies_tutorials.htm"><i class="fa fa-caret-right"></i> Python Technologies </a></li>
+<li><a href="/sap_tutorials.htm"><i class="fa fa-caret-right"></i> SAP Tutorials </a></li>
+<li><a href="/scripting_lnaguage_tutorials.htm"><i class="fa fa-caret-right"></i>Programming Scripts </a></li>
+<li><a href="/selected_reading.htm"><i class="fa fa-caret-right"></i> Selected Reading </a></li>
+<li><a href="/software_quality_tutorials.htm"><i class="fa fa-caret-right"></i> Software Quality </a></li>
+<li><a href="/soft_skill_tutorials.htm"><i class="fa fa-caret-right"></i> Soft Skills </a></li>
+<li><a href="/telecom_tutorials.htm"><i class="fa fa-caret-right"></i> Telecom Tutorials </a></li>
+<li><a href="/upsc_ias_exams.htm"><i class="fa fa-caret-right"></i> UPSC IAS Exams </a></li>
+<li><a href="/web_development_tutorials.htm"><i class="fa fa-caret-right"></i> Web Development </a></li>
+<li><a href="/sports_tutorials.htm"><i class="fa fa-caret-right"></i> Sports Tutorials </a></li>
+<li><a href="/xml_technologies_tutorials.htm"><i class="fa fa-caret-right"></i> XML Technologies </a></li>
+<li><a href="/multi_language_tutorials.htm"><i class="fa fa-caret-right"></i> Multi-Language</a></li>
+<li><a href="/questions_and_answers.htm"><i class="fa fa-caret-right"></i> Interview Questions</a></li>
+</ul>
+</li>
+</ul>
+<div class="clear"></div>
+</div> 
+</div>
+<div class="right-menu">
+<div class="toc-toggle">
+<a href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+</div>
+<div class="mobile-search-btn">
+<a href="https://www.tutorialspoint.com/search.htm"><i class="fal fa-search"></i></a>
+</div>
+<div class="search-box">
+<form method="get" class="search-form" name="searchform" action="https://www.google.com/search" target="_blank" novalidate="">
+<input type="hidden" name="sitesearch" value="www.tutorialspoint.com" class="user-valid valid">
+<input class="header-search-box" type="text" id="search-string" name="q" placeholder="Search your favorite tutorials..." onfocus="if (this.value == 'Search your favorite tutorials...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search your favorite tutorials...';}" autocomplete="off">
+<button><i class="fal fa-search"></i></button>
+</form>
+</div>
+<div class="menu-btn library-btn">
+<a href="https://www.tutorialspoint.com/tutorialslibrary.htm"><i class="fal fa-cubes"></i> <span>Library</span></a>
+</div>
+<div class="menu-btn videos-btn">
+<a href="https://www.tutorialspoint.com/videotutorials/index.php"><i class="fal fa-video"></i> <span>Videos</span></a> 
+</div>
+<div class="menu-btn videos-btn">
+<a href="https://www.tutorialspoint.com/questions/index.php"><i class="fa fa-location-arrow"></i> <span>Q/A</span></a>
+</div>
+<div class="menu-btn ebooks-btn">
+<a href="https://store.tutorialspoint.com"><i class="fal fa-book"></i> <span>eBooks</span></a>
+</div>
+<div class="mui-dropdown">
+<button class="mui-btn mui-btn--primary mobile-menu" data-mui-toggle="dropdown">
+<span class="mui-caret"></span>
+</button>
+<ul class="mui-dropdown__menu">
+<li><a href="https://www.tutorialspoint.com/tutorialslibrary.htm"><i class="fal fa-cubes"></i> <span>Library</span></a></li>
+<li><a href="https://www.tutorialspoint.com/videotutorials/index.php"><i class="fal fa-video"></i> <span>Videos</span></a></li>
+<li><a href="https://store.tutorialspoint.com"><i class="fal fa-book"></i> <span>eBooks</span></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Top main-menu Ends Here -->
+</header>
+<div class="mui-container-fluid content">
+<div class="mui-container">
+<!-- Tutorial ToC Starts Here -->
+<div class="mui-col-md-3 tutorial-toc">
+<div class="mini-logo">
+<img src="/expressjs/images/expressjs-mini-logo.jpg" alt="ExpressJS Tutorial" />
+</div>
+<ul class="toc chapters">
+<li><a class="videolink" href="/expressjs_online_training/index.asp" target="_blank"><img src="/expressjs/images/expressjs-video-tutorials.jpg" alt="ExpressJS Video Tutorials" /></a></li>
+</ul>
+<ul class="toc chapters">
+<li class="heading">ExpressJS Tutorial</li>
+<li><a href="/expressjs/index.htm">ExpressJS - Home</a></li>
+<li><a href="/expressjs/expressjs_overview.htm">ExpressJS - Overview</a></li>
+<li><a href="/expressjs/expressjs_environment.htm">ExpressJS - Environment</a></li>
+<li><a href="/expressjs/expressjs_hello_world.htm">ExpressJS - Hello World</a></li>
+<li><a href="/expressjs/expressjs_routing.htm">ExpressJS - Routing</a></li>
+<li><a href="/expressjs/expressjs_http_methods.htm">ExpressJS - HTTP Methods</a></li>
+<li><a href="/expressjs/expressjs_url_building.htm">ExpressJS - URL Building</a></li>
+<li><a href="/expressjs/expressjs_middleware.htm">ExpressJS - Middleware</a></li>
+<li><a href="/expressjs/expressjs_templating.htm">ExpressJS - Templating</a></li>
+<li><a href="/expressjs/expressjs_static_files.htm">ExpressJS - Static Files</a></li>
+<li><a href="/expressjs/expressjs_form_data.htm">ExpressJS - Form Data</a></li>
+<li><a href="/expressjs/expressjs_database.htm">ExpressJS - Database</a></li>
+<li><a href="/expressjs/expressjs_cookies.htm">ExpressJS - Cookies</a></li>
+<li><a href="/expressjs/expressjs_sessions.htm">ExpressJS - Sessions</a></li>
+<li><a href="/expressjs/expressjs_authentication.htm">ExpressJS - Authentication</a></li>
+<li><a href="/expressjs/expressjs_restful_apis.htm">ExpressJS - RESTful APIs</a></li>
+<li><a href="/expressjs/expressjs_scaffolding.htm">ExpressJS - Scaffolding</a></li>
+<li><a href="/expressjs/expressjs_error_handling.htm">ExpressJS - Error handling</a></li>
+<li><a href="/expressjs/expressjs_debugging.htm">ExpressJS - Debugging</a></li>
+<li><a href="/expressjs/expressjs_best_practices.htm">ExpressJS - Best Practices</a></li>
+<li><a href="/expressjs/expressjs_resources.htm">ExpressJS - Resources</a></li>
+</ul>
+<ul class="toc chapters">
+<li class="heading">ExpressJS Useful Resources</li>
+<li><a href="/expressjs/expressjs_quick_guide.htm">ExpressJS - Quick Guide</a></li>
+<li><a href="/expressjs/expressjs_useful_resources.htm">ExpressJS - Useful Resources</a></li>
+<li><a href="/expressjs/expressjs_discussion.htm">ExpressJS - Discussion</a></li>
+</ul>
+<ul class="toc reading">
+<li class="sreading">Selected Reading</li>
+<li><a target="_top" href="/upsc_ias_exams.htm">UPSC IAS Exams Notes</a></li>
+<li><a target="_top" href="/developers_best_practices/index.htm">Developer's Best Practices</a></li>
+<li><a target="_top" href="/questions_and_answers.htm">Questions and Answers</a></li>
+<li><a target="_top" href="/effective_resume_writing.htm">Effective Resume Writing</a></li>
+<li><a target="_top" href="/hr_interview_questions/index.htm">HR Interview Questions</a></li>
+<li><a target="_top" href="/computer_glossary.htm">Computer Glossary</a></li>
+<li><a target="_top" href="/computer_whoiswho.htm">Who is Who</a></li>
+</ul>
+<div style="height:250px;">
+<div id="430c9911-782f-495d-88f9-69f58ca8c9a4" class="_ap_apex_ad">
+<script>
+var adpushup = adpushup || {};
+adpushup.que = adpushup.que || [];
+adpushup.que.push(function() {
+adpushup.triggerAd("430c9911-782f-495d-88f9-69f58ca8c9a4");
+});
+</script>
+</div>
+</div>
+</div>
+<!-- Tutorial ToC Ends Here -->
+<!-- Tutorial Content Starts Here -->
+<div class="mui-col-md-6 tutorial-content">
+<h1>ExpressJS - RESTFul APIs</h1>
+<hr />
+<div class="top-ad-heading">Advertisements</div>
+<div style="text-align:center" class="google-top-ads">
+<div id="adp_top_ads" style="text-align:center !important;"></div>
+<script>
+     var adPos = document.getElementById('adp_top_ads');
+     var ad_id_720 = "8014640d-fd34-4b2e-9b1b-cc67234a2325";
+     var ad_id_650 = "2d1bb2c4-eb72-471d-9c80-1bf5514728c1";
+     var ad_id_300 = "df94a1a9-ae2f-432d-9a92-d93823ff4503";
+     var width = window.innerWidth;
+     var ad_id = ad_id_720;
+     if( width <= 768 ){
+        ad_id =  ad_id_300;
+     }else if( width <= 1435 ){
+        ad_id =  ad_id_650;
+     }
+     adPos.innerHTML = '<div id="' + ad_id + '" class="_ap_apex_ad"></div>';
+     var adpushup = adpushup || {};
+     adpushup.que = adpushup.que || [];
+     adpushup.que.push(function() {
+     adpushup.triggerAd(ad_id);
+     });
+</script>
+</div>
+<br>
+<div class="mui-container-fluid button-borders">
+<div class="pre-btn">
+<a href="/expressjs/expressjs_authentication.htm"><i class="fal fa-chevron-circle-left"></i> Previous Page</a>
+</div>
+<div class="nxt-btn">
+<a href="/expressjs/expressjs_scaffolding.htm">Next Page <i class="fal fa-chevron-circle-right"></i>&nbsp;</a>
+</div>
+</div>
+<div class="clearer"></div>
+<p>An API is always needed to create mobile applications, single page applications, use AJAX calls and provide data to clients. An popular architectural style of how to structure and name these APIs and the endpoints is called <b>REST(Representational Transfer State)</b>. <b>HTTP 1.1</b> was designed keeping REST principles in mind. REST was introduced by <b>Roy Fielding</b> in 2000 in his Paper Fielding Dissertations.</p>
+<p>RESTful URIs and methods provide us with almost all information we need to process a request. The table given below summarizes how the various verbs should be used and how URIs should be named. We will be creating a movies API towards the end; let us now discuss how it will be structured.</p>
+<table class="table table-bordered">
+<tr>
+<th style="text-align:center;">Method</th>
+<th style="text-align:center;">URI</th>
+<th style="text-align:center;">Details</th>
+<th style="text-align:center;">Function</th>
+</tr>
+<tr>
+<td>GET</td>
+<td>/movies</td>
+<td>Safe, cachable</td>
+<td>Gets the list of all movies and their details</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/movies/1234</td>
+<td>Safe, cachable</td>
+<td>Gets the details of Movie id 1234</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/movies</td>
+<td>N/A</td>
+<td>Creates a new movie with the details provided. Response contains the URI for this newly created resource.</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/movies/1234</td>
+<td>Idempotent</td>
+<td>Modifies movie id 1234(creates one if it doesn't already exist). Response contains the URI for this newly created resource.</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/movies/1234</td>
+<td>Idempotent</td>
+<td>Movie id 1234 should be deleted, if it exists. Response should contain the status of the request.</td>
+</tr>
+<tr>
+<td>DELETE or PUT</td>
+<td>/movies</td>
+<td>Invalid</td>
+<td>Should be invalid. <b>DELETE</b> and <b>PUT</b> should specify which resource they are working on.</td>
+</tr>
+</table>
+<p>Let us now create this API in Express. We will be using JSON as our transport data format as it is easy to work with in JavaScript and has other benefits. Replace your <b>index.js</b> file with the <b>movies.js</b> file as in the following program.</p>
+<h2>index.js</h2>
+<pre class="prettyprint notranslate">
+var express = require('express');
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
+
+var app = express();
+
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.array());
+
+//Require the Router we defined in movies.js
+var movies = require('./movies.js');
+
+//Use the Router on the sub route /movies
+app.use('/movies', movies);
+
+app.listen(3000);
+</pre>
+<p>Now that we have our application set up, let us concentrate on creating the API.</p>
+<p>Start by setting up the movies.js file. We are not using a database to store the movies but are storing them in memory; so every time the server restarts, the movies added by us will vanish. This can easily be mimicked using a database or a file (using node fs module).</p>
+<p>Once you import Express then, create a Router and export it using <i>module.exports</i> &minus;</p>
+<pre class="prettyprint notranslate">
+var express = require('express');
+var router = express.Router();
+var movies = [
+   {id: 101, name: "Fight Club", year: 1999, rating: 8.1},
+   {id: 102, name: "Inception", year: 2010, rating: 8.7},
+   {id: 103, name: "The Dark Knight", year: 2008, rating: 9},
+   {id: 104, name: "12 Angry Men", year: 1957, rating: 8.9}
+];
+
+//Routes will go here
+module.exports = router;</pre>
+<h2>GET routes</h2>
+<p>Let us define the GET route for getting all the movies &minus;</p>
+<pre class="prettyprint notranslate">
+router.get('/', function(req, res){
+   res.json(movies);
+});
+</pre>
+<p>To test out if this is working fine, run your app, then open your terminal and enter &minus;</p>
+<pre class="result notranslate">
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET 
+localhost:3000/movies
+</pre>
+<p>The following response will be displayed &minus;</p>
+<pre class="result notranslate">
+[{"id":101,"name":"Fight Club","year":1999,"rating":8.1},
+{"id":102,"name":"Inception","year":2010,"rating":8.7},
+{"id":103,"name":"The Dark Knight","year":2008,"rating":9},
+{"id":104,"name":"12 Angry Men","year":1957,"rating":8.9}]
+</pre>
+<p>We have a route to get all the movies. Let us now create a route to get a specific movie by its id.</p>
+<pre class="prettyprint notranslate">
+router.get('/:id([0-9]{3,})', function(req, res){
+   var currMovie = movies.filter(function(movie){
+      if(movie.id == req.params.id){
+         return true;
+      }
+   });
+   if(currMovie.length == 1){
+      res.json(currMovie[0])
+   } else {
+      res.status(404);//Set status to 404 as movie was not found
+      res.json({message: "Not Found"});
+   }
+});
+</pre>
+<p>This will get us the movies according to the id that we provided. To check the output, use the following command in your terminal &minus;</p>
+<pre class="result notranslate">
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET 
+localhost:3000/movies/101
+</pre>
+<p>You'll get the following response &minus;</p>
+<pre class="result notranslate">
+{"id":101,"name":"Fight Club","year":1999,"rating":8.1}
+</pre>
+<p>If you visit an invalid route, it will produce a <b>cannot GET error</b> while if you visit a valid route with an id that doesn’t exist, it will produce a 404 error.</p>
+<p>We are done with the GET routes, let us now move on to the <b>POST</b> route.</p>
+<h2>POST route</h2>
+<p>Use the following route to handle the <b>POSTed</b> data &minus;</p>
+<pre class="prettyprint notranslate">
+router.post('/', function(req, res){
+   //Check if all fields are provided and are valid:
+   if(!req.body.name ||
+      !req.body.year.toString().match(/^[0-9]{4}$/g) ||
+      !req.body.rating.toString().match(/^[0-9]\.[0-9]$/g)){
+      
+      res.status(400);
+      res.json({message: "Bad Request"});
+   } else {
+      var newId = movies[movies.length-1].id+1;
+      movies.push({
+         id: newId,
+         name: req.body.name,
+         year: req.body.year,
+         rating: req.body.rating
+      });
+      res.json({message: "New movie created.", location: "/movies/" + newId});
+   }
+});
+</pre>
+<p>This will create a new movie and store it in the movies variable. To check this route, enter the following code in your terminal &minus;</p>
+<pre class="result notranslate">
+curl -X POST --data "name = Toy%20story&amp;year = 1995&amp;rating = 8.5" http://localhost:3000/movies
+</pre>
+<p>The following response will be displayed &minus;</p>
+<pre class="result notranslate">
+{"message":"New movie created.","location":"/movies/105"}
+</pre>
+<p>To test if this was added to the movies object, Run the get request for <b>/movies/105</b> again. The following response will be displayed &minus;</p>
+<pre class="result notranslate">
+{"id":105,"name":"Toy story","year":"1995","rating":"8.5"}
+</pre>
+<p>Let us move on to create the PUT and DELETE routes.</p>
+<h2>PUT route</h2>
+<p>The PUT route is almost the same as the POST route. We will be specifying the id for the object that'll be updated/created. Create the route in the following way.</p>
+<pre class="prettyprint notranslate">
+router.put('/:id', function(req, res){
+   //Check if all fields are provided and are valid:
+   if(!req.body.name ||
+      !req.body.year.toString().match(/^[0-9]{4}$/g) ||
+      !req.body.rating.toString().match(/^[0-9]\.[0-9]$/g) ||
+      !req.params.id.toString().match(/^[0-9]{3,}$/g)){
+      
+      res.status(400);
+      res.json({message: "Bad Request"});
+   } else {
+      //Gets us the index of movie with given id.
+      var updateIndex = movies.map(function(movie){
+         return movie.id;
+      }).indexOf(parseInt(req.params.id));
+      
+      if(updateIndex === -1){
+         //Movie not found, create new
+         movies.push({
+            id: req.params.id,
+            name: req.body.name,
+            year: req.body.year,
+            rating: req.body.rating
+         });
+         res.json({message: "New movie created.", location: "/movies/" + req.params.id});
+      } else {
+         //Update existing movie
+         movies[updateIndex] = {
+            id: req.params.id,
+            name: req.body.name,
+            year: req.body.year,
+            rating: req.body.rating
+         };
+         res.json({message: "Movie id " + req.params.id + " updated.", 
+            location: "/movies/" + req.params.id});
+      }
+   }
+});
+</pre>
+<p>This route will perform the function specified in the above table. It will update the object with new details if it exists. If it doesn't exist, it will create a new object. To check the route, use the following curl command. This will update an existing movie. To create a new Movie, just change the id to a non-existing id.</p>
+<pre class="result notranslate">
+curl -X PUT --data "name = Toy%20story&amp;year = 1995&amp;rating = 8.5" 
+http://localhost:3000/movies/101
+</pre>
+<p><b>Response</b></p>
+<pre class="result notranslate">
+{"message":"Movie id 101 updated.","location":"/movies/101"}
+</pre>
+<h2>DELETE route</h2>
+<p>Use the following code to create a delete route. &minus;</p>
+<pre class="prettyprint notranslate">
+router.delete('/:id', function(req, res){
+   var removeIndex = movies.map(function(movie){
+      return movie.id;
+   }).indexOf(req.params.id); //Gets us the index of movie with given id.
+   
+   if(removeIndex === -1){
+      res.json({message: "Not found"});
+   } else {
+      movies.splice(removeIndex, 1);
+      res.send({message: "Movie id " + req.params.id + " removed."});
+   }
+});
+</pre>
+<p>Check the route in the same way as we checked the other routes. On successful deletion(for example id 105), you will get the following output &minus;</p>
+<pre class="result notranslate">
+{message: "Movie id 105 removed."}
+</pre>
+<p>Finally, our <b>movies.js</b> file will look like the following.</p>
+<pre class="prettyprint notranslate">
+var express = require('express');
+var router = express.Router();
+var movies = [
+   {id: 101, name: "Fight Club", year: 1999, rating: 8.1},
+   {id: 102, name: "Inception", year: 2010, rating: 8.7},
+   {id: 103, name: "The Dark Knight", year: 2008, rating: 9},
+   {id: 104, name: "12 Angry Men", year: 1957, rating: 8.9}
+];
+router.get('/:id([0-9]{3,})', function(req, res){
+   var currMovie = movies.filter(function(movie){
+      if(movie.id == req.params.id){
+         return true;
+      }
+   });
+   
+   if(currMovie.length == 1){
+      res.json(currMovie[0])
+   } else {
+      res.status(404);  //Set status to 404 as movie was not found
+      res.json({message: "Not Found"});
+   }
+});
+router.post('/', function(req, res){
+   //Check if all fields are provided and are valid:
+   if(!req.body.name ||
+      !req.body.year.toString().match(/^[0-9]{4}$/g) ||
+      !req.body.rating.toString().match(/^[0-9]\.[0-9]$/g)){
+      res.status(400);
+      res.json({message: "Bad Request"});
+   } else {
+      var newId = movies[movies.length-1].id+1;
+      movies.push({
+         id: newId,
+         name: req.body.name,
+         year: req.body.year,
+         rating: req.body.rating
+      });
+      res.json({message: "New movie created.", location: "/movies/" + newId});
+   }
+});
+
+router.put('/:id', function(req, res) {
+   //Check if all fields are provided and are valid:
+   if(!req.body.name ||
+      !req.body.year.toString().match(/^[0-9]{4}$/g) ||
+      !req.body.rating.toString().match(/^[0-9]\.[0-9]$/g) ||
+      !req.params.id.toString().match(/^[0-9]{3,}$/g)){
+      res.status(400);
+      res.json({message: "Bad Request"});
+   } else {
+      //Gets us the index of movie with given id.
+      var updateIndex = movies.map(function(movie){
+         return movie.id;
+      }).indexOf(parseInt(req.params.id));
+      
+      if(updateIndex === -1){
+         //Movie not found, create new
+         movies.push({
+            id: req.params.id,
+            name: req.body.name,
+            year: req.body.year,
+            rating: req.body.rating
+         });
+         res.json({
+            message: "New movie created.", location: "/movies/" + req.params.id});
+      } else {
+         //Update existing movie
+         movies[updateIndex] = {
+            id: req.params.id,
+            name: req.body.name,
+            year: req.body.year,
+            rating: req.body.rating
+         };
+         res.json({message: "Movie id " + req.params.id + " updated.",
+            location: "/movies/" + req.params.id});
+      }
+   }
+});
+
+router.delete('/:id', function(req, res){
+   var removeIndex = movies.map(function(movie){
+      return movie.id;
+   }).indexOf(req.params.id); //Gets us the index of movie with given id.
+   
+   if(removeIndex === -1){
+      res.json({message: "Not found"});
+   } else {
+      movies.splice(removeIndex, 1);
+      res.send({message: "Movie id " + req.params.id + " removed."});
+   }
+});
+module.exports = router;
+</pre>
+<p>This completes our REST API. Now you can create much more complex applications using this simple architectural style and Express.</p>
+<div class="mui-container-fluid button-borders show" id="bottom_navigation">
+<div class="pre-btn">
+<a href="/expressjs/expressjs_authentication.htm"><i class="fal fa-chevron-circle-left"></i> Previous Page</a>
+<a class="hide-on-mobile" href="javascript:printPage();"><i class="fa fa-print"></i> Print Page</a>
+</div>
+<div class="nxt-btn">
+<a href="/expressjs/expressjs_scaffolding.htm">Next Page <i class="fal fa-chevron-circle-right"></i>&nbsp;</a>
+</div>
+</div>
+<div class="google-bottom-ads">
+<div>Advertisements</div>
+<div id="adp_bottom_ads"></div>
+<script>
+var adPos = document.getElementById('adp_bottom_ads');
+var mobile_ad_id = "a8a632a6-046e-4f5c-b25f-8bc82ac89fb2";
+var desktop_ad_id = "e7ddd6f7-1ab0-494a-bade-887daa4373a0";
+var adpushup = adpushup || {};
+adpushup.que = adpushup.que || [];
+adpushup.que.push(function() {
+var ad_id = window.innerWidth <= 768 ? mobile_ad_id : desktop_ad_id;
+adPos.innerHTML = '<div id="' + ad_id + '" class="_ap_apex_ad"></div>';
+adpushup.triggerAd(ad_id);
+});
+</script>
+<div class="space-bottom"></div>
+</div>
+</div>
+<!-- Tutorial Content Ends Here -->
+<!-- Right Column Starts Here -->
+<div class="mui-col-md-2 google-right-ads">
+<div class="space-top"></div>
+<div class="google-right-ad" id="ad300" style="margin: 0px auto !important;margin-top:5px;">
+<div id="f0f6cff6-393d-4170-b63a-d9ff06ca9f25" class="_ap_apex_ad">
+<script>
+var adpushup = adpushup || {};
+adpushup.que = adpushup.que || [];
+adpushup.que.push(function() {
+adpushup.triggerAd("f0f6cff6-393d-4170-b63a-d9ff06ca9f25");
+});
+</script>
+</div>
+</div>
+<div class="google-right-ad" style="margin-top:16px;">
+<div id="5c0affd5-724a-475c-bfcd-cecbc7660c36" class="_ap_apex_ad">
+<script>
+var adpushup = adpushup || {};
+adpushup.que = adpushup.que || [];
+adpushup.que.push(function() {
+adpushup.triggerAd("5c0affd5-724a-475c-bfcd-cecbc7660c36");
+});
+</script>
+</div>
+</div>
+<div class="space-bottom"></div>
+
+<div class="google-right-ad" style="margin-top:16px;margin-bottom:15px;">
+<div id="8f8814c2-d64c-4d26-9cb9-543653c0b48f" class="_ap_apex_ad">
+<script>
+var adpushup = adpushup || {};
+adpushup.que = adpushup.que || [];
+adpushup.que.push(function() {
+adpushup.triggerAd("8f8814c2-d64c-4d26-9cb9-543653c0b48f");
+});
+</script>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column Ends Here -->
+</div>
+</div>
+<div class="clear"></div>
+<footer id="footer">
+<div class="mui--text-center">
+<div class="mui--text-caption mui--text-light">
+<a href="/index.htm" class="logo"><img class="img-responsive" src="/images/logo-black.png" alt="Tutorials Point" title="Tutorials Point"></a>
+</div>
+<ul class="mui-list--inline mui--text-body2 mui--text-light">
+<li><a href="/about/index.htm"><i class="fal fa-globe"></i> About us</a></li>
+<li><a href="/about/about_terms_of_use.htm"><i class="fal fa-asterisk"></i> Terms of use</a></li>
+<li><a href="/about/about_privacy.htm"> <i class="fal fa-shield-check"></i> Privacy Policy</a></li>
+<li><a href="/about/faq.htm"><i class="fal fa-question-circle"></i> FAQ's</a></li>
+<li><a href="/about/about_helping.htm"><i class="fal fa-hands-helping"></i> Helping</a></li>
+<li><a href="/about/contact_us.htm"><i class="fal fa-map-marker-alt"></i> Contact</a></li>
+</ul>
+<div class="mui--text-caption mui--text-light bottom-copyright-text">&copy; Copyright 2020. All Rights Reserved.</div>
+</div>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-232293-17"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-232293-6');
+</script>
+</footer>
+</body>
+</html>
+
