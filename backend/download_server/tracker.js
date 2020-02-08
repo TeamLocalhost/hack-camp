@@ -19,14 +19,18 @@ class Tracker {
     @param gid: group id , the group of user in that network
     @param chunk_size: the total size
     */
-    constructor(group_id, chunk_size) {
-        this.gid = group_id
+    constructor(chunk_size) {
         this.chunk_size = chunk_size
         this.table = new Array()
+        this.chunk_counter = -1
     }
 
+    getCurrentChunk(){
+        return this.chunk_counter
+    }
     assignNextChunk(user_id) {
-        this.table.push(new chunk(user_id))
+        this.table.push(new Chunk(user_id))
+        this.chunk_counter++
     }
 
     getTable() {
