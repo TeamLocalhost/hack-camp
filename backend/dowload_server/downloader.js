@@ -17,7 +17,8 @@ function splitChunks(file){
 }
 
 
-app.use(bodyParser.json())
+app.use(bodyParser.json())  //Parsing 
+
 app.post('/', (req, res)=> {
     var d=req.body.link
     var file=d.split("/")
