@@ -7,7 +7,6 @@ mongoose.connect(db_uri, { useNewUrlParser: true, useUnifiedTopology: true, useC
 
 app.use(express.json())
 
-const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 let User = require('../authentication/user.models.js')
 
@@ -17,7 +16,7 @@ connection.once('open', () => {
     console.log('MongoDB connected ')
 })
 // get all users for debug
-router.route('/all').get((req, res) => {
+app.get('/all',(req, res) => {
     User.find().select({ "_id": 0, "username": 1 })
         .then(users => res.json(users))
         .catch(err => res.status(400).json("error: " + err))
