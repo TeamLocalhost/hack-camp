@@ -1,29 +1,18 @@
 var express = require('express')
 var bodyParser = require('body-parser')
-const { spawn } = require("child_process");
+const { exec } = require("child_process");
 const splitFile = require('split-file');
 const Tracker = require('../download_server/tracker')
 const jwt = require('jsonwebtoken')
 
-var app = express()
-port = 80
 
-function splitChunks(file) {
-    // const com= spawn("tar",["cvzf",file,file])
-    // com.on("close",code=>{
-    //     if(!code){
-    //         console.log(`Compressed ${file}  succesfully`);
-    //     }
-    // })
-    splitFile.splitFileBySize(__dirname + '/downloads/' + file + '/' + file, 1000000)
+var app = express()
+port = 8080
+function splitChunks(file, group_token) {
+
+    splitFile.splitFileBySize(__dirname + '/' + group_token + '/chunk', 1000000)
         .then((names) => {
-            console.log(names);
-            const del = spawn("rm", [__dirname + '/downloads/' + file + '/' + file]);
-            del.on("close", code => {
-                if (!code) {
-                    console.log(`Deleted ${file}  succesfully`);
-                }
-            })
+            table[group_token] = new Tracker(names.length)
         })
         .catch((err) => {
             console.log('Error: ', err);
@@ -36,10 +25,6 @@ app.use(bodyParser.urlencoded()); // URL parsing
 
 // Table to maintain chunks for all groups
 let table = {}
-
-//{
-// 	"link":"https://www.tutorialspoint.com/expressjs/expressjs_restful_apis.htm"
-// }
 
 /* /download api
 
@@ -63,29 +48,22 @@ app.post('/download', (req, res) => {
 
     var file = file_url.split("/")
     file = file[(file.length) - 1]
-    const down = spawn("wget", [file_url, "-P", "downloads/" + file + "/bin"]);
-    // res.send({ status: "success", group_token: group_token })
-    
-
-
-    down.on("close", code => {
-        console.log(`child process exited with code ${code}`);
-        if (!code) 
-        {
-            // res.send({ status: "success",group_token:group_token })
-            splitChunks(file)
-                table[group_token] = new Tracker()
-        }
-        else {
+    exec('mkdir ' + group_token + ' && curl -o ' + group_token + '/chunk ' + file_url, (error) => {
+        if (error) {
+            console.error(`exec error: ${error}`);
             res.send({ status: "error" })
+            return;
         }
-    })
 
-    
+        splitChunks(file, group_token)      
+        res.send({ status: "success", group_token: group_token })
+    });
+
+
 
 })
 
-app.post('/ack-chunk',(req,res)=>{
+app.post('/ack-chunk', (req, res) => {
     table[req.body.group_token].table[req.body.chunk_id].setStatus()
     console.log(table[req.body.group_token].table)
 })
@@ -97,18 +75,23 @@ app.get('/get-next-chunk', (req, res) => {
     try {
 
         let current_chunk = table[req.query.group_token].chunk_counter
-        console.log(current_chunk)
-        table[req.query.group_token].assignNextChunk(req.query.userid)
-        res.set({
-            'Content-Disposition': 'attachment; filename=' + 'chunk' + current_chunk,
-            'chunk-id':current_chunk
-            // 'Content-Type': res.headers['Content-Type']
-        });
+        console.log("curr:"+current_chunk)
+        console.log("size:"+table[req.query.group_token].chunk_size);
+        
+        if (current_chunk <= table[req.query.group_token].chunk_size) {
+            table[req.query.group_token].assignNextChunk(req.query.userid)
+            res.set({
+                'Content-Disposition': 'attachment; filename=' + 'chunk' + current_chunk,
+                'chunk-id': current_chunk
+                // 'Content-Type': res.headers['Content-Type']
+            });
 
-        // To add when to stop, for now send node error and nothing happens
-        res.sendFile(__dirname + '/downloads/chunk' + current_chunk)
-
-
+            res.sendFile(__dirname + '/' + req.query.group_token + '/chunk.sf-part' + current_chunk)
+            return;
+        }
+        else{
+            res.send({status:"success",message:"transmission completed"})
+        }
     }
     catch (err) {
         res.send({ status: "error" })
