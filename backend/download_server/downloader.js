@@ -31,6 +31,7 @@ function splitChunks(file) {
 
 
 app.use(bodyParser.json())  //Parsing 
+app.use(bodyParser.urlencoded()); // URL parsing
 
 //{
 // 	"link":"https://www.tutorialspoint.com/expressjs/expressjs_restful_apis.htm"
@@ -60,11 +61,11 @@ table["g123"] = new Tracker(3)
 
 console.log(table)
 // end point which sends the user next chunk
-app.post('/get-next-chunk', async (req, res) => {
-    console.log(req.body.gid)
-    let current_chunk = table[req.body.gid].chunk_counter
+app.get('/get-next-chunk', (req, res) => {
+    console.log(req.query.gid)
+    let current_chunk = table[req.query.gid].chunk_counter
     console.log(current_chunk)
-    await table[req.body.gid].assignNextChunk(req.body.userid)
+    table[req.query.gid].assignNextChunk(req.query.userid)
     res.set({
         'Content-Disposition': 'attachment; filename=' + 'chunk' + current_chunk  ,
         // 'Content-Type': res.headers['Content-Type']
