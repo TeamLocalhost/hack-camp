@@ -1,4 +1,6 @@
 // This files tracks the chunks and schedules them to the user on request
+const express = require('express')
+const router = express.Router()
 
 class chunk {
     /*  chunk
@@ -34,3 +36,15 @@ class Tracker {
         console.log(this.table)
     }
 }
+
+let table = new Tracker('g123', 4)
+
+let chunk_counter = 0
+// Route which send the user next chunk
+router.route('/get-next-chunk').get((req, res) => {
+    table.assignNextChunk()
+    
+    // Dummy path change it later
+    res.sendFile('backend\dowload_server\downloads\chunk'+chunk_counter)
+    chunk_counter++
+})
