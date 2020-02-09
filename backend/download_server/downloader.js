@@ -68,24 +68,6 @@ app.post('/ack-chunk', (req, res) => {
     console.log(table[req.body.group_token].table)
 })
 
-app.get('/download-file/:group_token/:filename', (req, res) => {
-    try {
-
-            res.set({
-                'Content-Disposition': 'attachment; filename=' + 'chunk' + current_chunk,
-                'chunk-id': current_chunk
-                // 'Content-Type': res.headers['Content-Type']
-            });
-
-            res.sendFile(__dirname + '/' + req.query.group_token + '/chunk.sf-part' + current_chunk)
-            return;
-        }
-    
-    catch (err) {
-        res.send({ status: "error" })
-    }  
-})
-
 // end point which sends the user next chunk
 app.get('/get-next-chunk', (req, res) => {
     console.log(table)
@@ -98,9 +80,13 @@ app.get('/get-next-chunk', (req, res) => {
         
         if (current_chunk <= table[req.query.group_token].chunk_size) {
             table[req.query.group_token].assignNextChunk(req.query.userid)
-    
-            res.send({status:"success",next:"chunk.sf-part"+current_chunk})
+            res.set({
+                'Content-Disposition': 'attachment; filename=' + 'chunk' + current_chunk,
+                'chunk-id': current_chunk
+                // 'Content-Type': res.headers['Content-Type']
+            });
 
+            res.sendFile(__dirname + '/' + req.query.group_token + '/chunk.sf-part' + current_chunk)
             return;
         }
         else{
