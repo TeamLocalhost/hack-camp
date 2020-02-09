@@ -72,16 +72,16 @@ app.get('/download-file/:group_token/:filename', (req, res) => {
     try {
 
             res.set({
-                'Content-Disposition': 'attachment; filename=' + req.params.filename,
+                'Content-Disposition': 'attachment; filename=' + 'chunk' + current_chunk,
+                'chunk-id': current_chunk
                 // 'Content-Type': res.headers['Content-Type']
             });
 
-            res.sendFile(__dirname + '/' + req.params.group_token + '/' + req.params.filename)
+            res.sendFile(__dirname + '/' + req.query.group_token + '/chunk.sf-part' + current_chunk)
             return;
         }
     
     catch (err) {
-        console.log(err)
         res.send({ status: "error" })
     }  
 })
